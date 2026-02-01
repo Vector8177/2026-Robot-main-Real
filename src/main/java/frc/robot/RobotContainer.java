@@ -20,6 +20,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -32,6 +33,7 @@ import frc.robot.commands.DriveCommands;
 import frc.robot.commands.MainCommands;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.climber.Climber;
+import frc.robot.subsystems.climber.ClimberIOSim;
 import frc.robot.subsystems.climber.ClimberIOTalonFX;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
@@ -40,16 +42,21 @@ import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeIOSim;
 import frc.robot.subsystems.intake.IntakeIOTalonFX;
 import frc.robot.subsystems.intakePivot.IntakePivot;
 import frc.robot.subsystems.intakePivot.IntakePivotIO;
+import frc.robot.subsystems.intakePivot.IntakePivotIOSim;
 import frc.robot.subsystems.intakePivot.IntakePivotIOTalonFX;
 import frc.robot.subsystems.turret.Turret;
+import frc.robot.subsystems.turret.TurretIOSim;
 import frc.robot.subsystems.turret.TurretIOTalonFX;
 // import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.wrist.Wrist;
+import frc.robot.subsystems.wrist.WristIOSim;
 import frc.robot.subsystems.wrist.WristIOTalonFX;
+import frc.robot.util.CommandXboxControllerSim;
 
 import java.util.function.DoubleSupplier;
 
@@ -72,7 +79,7 @@ public class RobotContainer {
 //   private final Vision vision;
 
   // Controller
-  private final CommandXboxController driverController = new CommandXboxController(0);
+  private final CommandXboxController driverController;
   private final CommandXboxController operatorController = new CommandXboxController(1);
 
   // Dashboard inputs
@@ -115,6 +122,8 @@ public class RobotContainer {
         //         drive::addVisionMeasurement,
         //         new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation),
                 // new VisionIOLimelight(VisionConstants.camera1Name, drive::getRotation));
+
+        driverController = new CommandXboxController(0);
       }
 
       case SIM -> {
@@ -127,15 +136,17 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
 
-        intake = new Intake(new IntakeIOTalonFX());
+        intake = new Intake(new IntakeIOSim());
 
-        intakePivot = new IntakePivot(new IntakePivotIOTalonFX());
+        intakePivot = new IntakePivot(new IntakePivotIOSim());
 
-        climber = new Climber(new ClimberIOTalonFX());
+        climber = new Climber(new ClimberIOSim());
 
-        wrist = new Wrist(new WristIOTalonFX());
+        wrist = new Wrist(new WristIOSim());
 
-        turret = new Turret(new TurretIOTalonFX());
+        turret = new Turret(new TurretIOSim());
+
+        driverController = new CommandXboxControllerSim(0);
 
         // vision =
         //     new Vision(
@@ -173,6 +184,8 @@ public class RobotContainer {
         //         drive::addVisionMeasurement,
         //         new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation),
         //         new VisionIOLimelight(VisionConstants.camera1Name, drive::getRotation));
+
+        driverController = new CommandXboxController(0);
       }
     }
 

@@ -150,7 +150,7 @@ public class Robot extends LoggedRobot {
     SmartDashboard.putNumber("Match Timer", matchTimeRemaining);
 
     String gameData = DriverStation.getGameSpecificMessage();
-    DriverStation.Alliance alliance = DriverStation.getAlliance().get();
+    DriverStation.Alliance alliance = DriverStation.getAlliance().orElseGet(() -> DriverStation.Alliance.Blue);
     boolean output = false;
     boolean change = true;
     // if(matchTimer.get()==

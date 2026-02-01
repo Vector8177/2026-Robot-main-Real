@@ -81,7 +81,10 @@ public class Turret extends SubsystemBase {
     //System.out.println("L1: "+x);
     Logger.recordOutput("L1", L1);
     Logger.recordOutput("L2", L2);
-    Logger.recordOutput("TX", LimelightHelpers.getRawFiducials("limelight-turret")[0].txnc);
+    RawFiducial[] limelight = LimelightHelpers.getRawFiducials("limelight-turret");
+    if(limelight.length > 0){
+          Logger.recordOutput("TX", limelight[0].txnc); //wont work in sim
+    }
   }
 
   public void setMotor(double voltage) {

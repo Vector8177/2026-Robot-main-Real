@@ -15,6 +15,7 @@ package frc.robot;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.RobotBase;
 import java.util.Set;
 
@@ -71,6 +72,7 @@ public final class Constants {
   public static final class IntakeConstants {
     public static final int MOTOR_ID = 31;
     public static final int MAX_VOLTAGE = 12;
+    public static final DCMotor SIM_INTAKE_MOTOR = DCMotor.getKrakenX60(1);
   }
 
   public static final class IntakePivotConstants {
