@@ -1,5 +1,6 @@
 package frc.robot.util;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -11,12 +12,12 @@ public class CommandXboxControllerSim extends CommandXboxController{
         RIGHT_JOYSTICK_Y(3),
         RIGHT_TRIGGER(4),
         LEFT_TRIGGER(5),
-        A(0),
-        B(1),
-        X(3),
-        Y(4),
-        LEFT_BUMPER(6),
-        RIGHT_BUMPER(7);
+        A(1),
+        B(2),
+        X(4),
+        Y(5),
+        LEFT_BUMPER(7),
+        RIGHT_BUMPER(8);
 
 
         private final int port;
@@ -75,10 +76,11 @@ public class CommandXboxControllerSim extends CommandXboxController{
         return button(XboxButtonPorts.B.getPort());
     }
 
-        @Override
-    public Trigger x() {
-        return button(XboxButtonPorts.X.getPort());
-    }
+ @Override
+public Trigger x() {
+    return button(XboxButtonPorts.X.getPort())
+        .onTrue(new InstantCommand(() -> System.out.println("X button pressed!")));
+}
 
         @Override
     public Trigger y() {

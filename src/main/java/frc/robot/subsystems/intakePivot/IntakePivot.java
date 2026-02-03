@@ -36,7 +36,7 @@ public class IntakePivot extends SubsystemBase {
         pidController.calculate(io.getPosition(), targetPosition)
             + feedForward.calculate(targetPosition, 0);
     ;
-    // Logger.recordOutput("IntakePivot Speed", pidMotorSpeed);
+    Logger.recordOutput("IntakePivot Speed", pidMotorSpeed);
     setMotor(
         MathUtil.clamp((pidMotorSpeed), -IntakePivotConstants.MAX_VOLTAGE, IntakePivotConstants.MAX_VOLTAGE));
   }

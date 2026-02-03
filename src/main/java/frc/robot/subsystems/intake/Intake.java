@@ -26,6 +26,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void setSpeed(double speed) {
+    System.out.println("setting the speed");
     targetSpeed = speed;
   }
 

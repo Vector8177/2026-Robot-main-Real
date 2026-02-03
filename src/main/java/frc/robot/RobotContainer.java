@@ -80,7 +80,7 @@ public class RobotContainer {
 
   // Controller
   private final CommandXboxController driverController;
-  private final CommandXboxController operatorController = new CommandXboxController(1);
+  // private final CommandXboxController operatorController = new CommandXboxController(1);
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -235,14 +235,14 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                     drive)
                 .ignoringDisable(true));
-    driverController
-        .x()
-        .whileTrue(
-            DriveCommands.joystickDrive(
-                drive,
-                () -> -driverController.getLeftY() * .5,
-                () -> -driverController.getLeftX() * .5,
-                () -> -driverController.getRightX() * .5));
+    // driverController
+    //     .x()
+    //     .whileTrue(
+    //         DriveCommands.joystickDrive(
+    //             drive,
+    //             () -> -driverController.getLeftY() * .5,
+    //             () -> -driverController.getLeftX() * .5,
+    //             () -> -driverController.getRightX() * .5));
     
 
     driverController
@@ -260,13 +260,19 @@ public class RobotContainer {
     driverController.rightTrigger().onTrue(MainCommands.runIntake(intake)).onFalse(MainCommands.stopIntake(intake));
     driverController.leftTrigger().onTrue(MainCommands.runOuttake(intake)).onFalse(MainCommands.stopIntake(intake));
     
-    operatorController.a().onTrue(MainCommands.stow(wrist, turret));
-    operatorController.b().onTrue(MainCommands.stowIntake(intakePivot));
-    operatorController.x().onTrue(MainCommands.intakePosition(intakePivot));
+    // operatorController.a().onTrue(MainCommands.stow(wrist, turret));
+    // operatorController.b().onTrue(MainCommands.stowIntake(intakePivot));
+    // operatorController.x().onTrue(MainCommands.intakePosition(intakePivot));
 
-    operatorController.rightTrigger().onTrue(MainCommands.runIntake(intake)).onFalse(MainCommands.stopIntake(intake));
-    operatorController.leftTrigger().onTrue(MainCommands.runOuttake(intake)).onFalse(MainCommands.stopIntake(intake));
-    
+    // operatorController.rightTrigger().onTrue(MainCommands.runIntake(intake)).onFalse(MainCommands.stopIntake(intake));
+    // operatorController.leftTrigger().onTrue(MainCommands.runOuttake(intake)).onFalse(MainCommands.stopIntake(intake));
+
+    driverController.a().onTrue(MainCommands.stow(wrist, turret));
+    driverController.b().onTrue(MainCommands.stowIntake(intakePivot));
+    driverController.x().onTrue(MainCommands.intakePosition(intakePivot));
+
+    driverController.rightTrigger().onTrue(MainCommands.runIntake(intake)).onFalse(MainCommands.stopIntake(intake));
+    driverController.leftTrigger().onTrue(MainCommands.runOuttake(intake)).onFalse(MainCommands.stopIntake(intake));
     // operatorController
     //     .povRight()
     //     .onTrue(

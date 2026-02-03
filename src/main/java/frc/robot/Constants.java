@@ -15,8 +15,15 @@ package frc.robot;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.wpilibj.RobotBase;
+
+import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.Pounds;
+
 import java.util.Set;
 
 /**
@@ -86,13 +93,20 @@ public final class Constants {
 
     //tune pid and svag later
     public static final double kP = 1.75; // 1.5
-    public static final double kI = 0.0;
-    public static final double kD = 0;
+    public static final double kI = 1.0;
+    public static final double kD = 1;
 
     public static final double kS = 0.11237;
     public static final double kV = 0.56387;
     public static final double kA = 0.041488;
     public static final double kG = 0.76416;
+
+    // sim constants
+    public static final DCMotor SIM_INTAKE_ARM_MOTOR = DCMotor.getKrakenX60(2); //placeholder
+    public static final double GEARING = 2; //placeholder
+    public static final Distance INTAKE_ARM_LENGTH = Inches.of(12.935416);
+    public static final Mass INTAKE_ARM_MASS = Pounds.of(11.638);
+    public static final Translation3d INTAKE_PIVOT = new Translation3d(0.3048, 0, 0.1482902);
   }
 
   public static final class TurretConstants {
@@ -129,6 +143,7 @@ public final class Constants {
     public static final double pos2 = 10d;
     public static final double pos3 = 20d;
 
+    public static final Translation3d TURRET_PIVOT = new Translation3d(-0.168275, 0, 0.4300016);
   }
 
   public static final class WristConstants {
