@@ -48,7 +48,15 @@ public final class Constants {
     REPLAY
   }
 
-  
+  public static final class Dimensions{
+    public static final Distance ROBOT_WIDTH = Inches.of(34);
+    public static final Distance ROBOT_LENGTH = Inches.of(34);
+    public static final Distance BUMPER_HEIGHT = Inches.of(4.5);
+
+    public static final Distance INTAKE_OFFSET_X = Inches.of(17);
+    public static final Distance INTAKE_BOUNDING_Y = Inches.of(26.5);
+    public static final Distance INTAKE_BOUNDING_X = Inches.of(8.097393);
+  }
 
   public static final class ElevatorConstants {
     public static final int LEFT_MOTOR_ID = 31; // lead motor

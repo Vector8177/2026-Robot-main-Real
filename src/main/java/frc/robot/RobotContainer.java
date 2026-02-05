@@ -21,10 +21,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Constants.Dimensions;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Constants.WristConstants;
@@ -57,6 +59,9 @@ import frc.robot.subsystems.wrist.Wrist;
 import frc.robot.subsystems.wrist.WristIOSim;
 import frc.robot.subsystems.wrist.WristIOTalonFX;
 import frc.robot.util.CommandXboxControllerSim;
+import frc.robot.util.FuelSim;
+
+import static edu.wpi.first.units.Units.Meters;
 
 import java.util.function.DoubleSupplier;
 
@@ -147,6 +152,8 @@ public class RobotContainer {
         turret = new Turret(new TurretIOSim());
 
         driverController = new CommandXboxControllerSim(0);
+
+        configureFuelSim();
 
         // vision =
         //     new Vision(
@@ -302,6 +309,33 @@ public class RobotContainer {
     //     .leftBumper()
     //     .onTrue(MainCommands.turnTurretBackward(turret))
     //     .onFalse(MainCommands.stopTurret(turret));
+  }
+
+  private void configureFuelSim() {
+    FuelSim instance = FuelSim.getInstance();
+    instance.spawnStartingFuel();
+    instance.registerRobot(
+            Dimensions.ROBOT_WIDTH.in(Meters),
+            Dimensions.ROBOT_LENGTH.in(Meters),
+            Dimensions.BUMPER_HEIGHT.in(Meters),
+            drive::getPose,
+            drive::getChassisSpeeds);
+    instance
+        .registerIntake(
+            Dimensions.INTAKE_OFFSET_X.in(Meters),
+            Dimensions.INTAKE_OFFSET_X.plus(Dimensions.INTAKE_BOUNDING_X).in(Meters),
+            -Dimensions.INTAKE_BOUNDING_Y.div(2).in(Meters),
+            Dimensions.INTAKE_BOUNDING_Y.div(2).in(Meters),
+            intake::canArmIntake,
+            intake::doArmIntake);
+
+    instance.start();
+    SmartDashboard.putData(Commands.runOnce(() -> {
+                FuelSim.getInstance().clearFuel();
+                FuelSim.getInstance().spawnStartingFuel();
+            })
+            .withName("Reset Fuel")
+            .ignoringDisable(true));
   }
 
   /**
