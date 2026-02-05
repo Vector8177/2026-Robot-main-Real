@@ -17,10 +17,12 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.wpilibj.RobotBase;
 
+import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Pounds;
 
@@ -107,6 +109,7 @@ public final class Constants {
     public static final Distance INTAKE_ARM_LENGTH = Inches.of(12.935416);
     public static final Mass INTAKE_ARM_MASS = Pounds.of(11.638);
     public static final Translation3d INTAKE_PIVOT = new Translation3d(0.3048, 0, 0.1482902);
+    public static final Angle INTAKE_ARM_STARTING_ANGLE = Degrees.of(-101.838585); //yaw of intake pivot when the robot first starts relative to the world's coordinate system
   }
 
   public static final class TurretConstants {

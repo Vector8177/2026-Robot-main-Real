@@ -18,8 +18,8 @@ public class IntakePivotIOSim implements IntakePivotIO {
             GEARING,
             SingleJointedArmSim.estimateMOI(INTAKE_ARM_LENGTH.in(Meters), INTAKE_ARM_MASS.in(Kilograms)),
             INTAKE_ARM_LENGTH.in(Meters),
-            Units.degreesToRadians(-180), // TODO: placeholder
-            Units.degreesToRadians(180), // TODO: placeholder
+            Units.degreesToRadians(-360), // TODO: placeholder
+            Units.degreesToRadians(360), // TODO: placeholder
             false,
             0);// TODO: placeholder
 
@@ -68,7 +68,7 @@ public class IntakePivotIOSim implements IntakePivotIO {
     }
 
     public void setVoltage(double speed) {
-        arm.setVoltage(speed);
+        arm.setControl(new VoltageOut(speed));
     }
 
 }
