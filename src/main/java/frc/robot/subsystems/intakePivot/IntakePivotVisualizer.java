@@ -5,7 +5,7 @@ import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Radians;
 import static frc.robot.Constants.IntakePivotConstants.INTAKE_PIVOT;
 import static frc.robot.Constants.IntakePivotConstants.INTAKE_POSITION;
-import static frc.robot.Constants.IntakePivotConstants.INTAKE_ARM_STARTING_ANGLE;
+import static frc.robot.Constants.IntakePivotConstants.INTAKE_ARM_EXPORTED_OFFSET_FROM_HORIZONTAL;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -25,7 +25,7 @@ public class IntakePivotVisualizer {
     }
 
     public void update(Angle angle){
-        Logger.recordOutput("ArmPose", new Pose3d(INTAKE_PIVOT, new Rotation3d(0, angle.plus(INTAKE_ARM_STARTING_ANGLE).in(Radians), 0)));
+        Logger.recordOutput("ArmPose", new Pose3d(INTAKE_PIVOT, new Rotation3d(0, angle.times(-1).plus(INTAKE_ARM_EXPORTED_OFFSET_FROM_HORIZONTAL).in(Radians), 0)));
         this.angle.mut_replace(angle);
     }
 

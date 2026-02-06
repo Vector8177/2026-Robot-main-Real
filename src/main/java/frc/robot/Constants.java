@@ -98,13 +98,13 @@ public final class Constants {
 
 
     //DEFINITELY CHANGE, THIS IS A GUESS!!
-    public static final double INTAKE_POSITION = 3d;
+    public static final double INTAKE_POSITION = 1.3439d;
 
 
     //tune pid and svag later
-    public static final double kP = 1.75; // 1.5
-    public static final double kI = 1.0;
-    public static final double kD = 1;
+    public static final double kP = 1; // 1.5
+    public static final double kI = 0;
+    public static final double kD = 0;
 
     public static final double kS = 0.11237;
     public static final double kV = 0.56387;
@@ -117,7 +117,8 @@ public final class Constants {
     public static final Distance INTAKE_ARM_LENGTH = Inches.of(12.935416);
     public static final Mass INTAKE_ARM_MASS = Pounds.of(11.638);
     public static final Translation3d INTAKE_PIVOT = new Translation3d(0.3048, 0, 0.1482902);
-    public static final Angle INTAKE_ARM_STARTING_ANGLE = Degrees.of(-101.838585); //yaw of intake pivot when the robot first starts relative to the world's coordinate system
+    public static final Angle INTAKE_ARM_STARTING_ANGLE = Degrees.of(90); //yaw of intake pivot when the robot first starts relative to the world's coordinate system
+    public static final Angle INTAKE_ARM_EXPORTED_OFFSET_FROM_HORIZONTAL = Degrees.of(-11.838585);
   }
 
   public static final class TurretConstants {

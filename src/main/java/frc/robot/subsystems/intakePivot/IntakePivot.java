@@ -31,11 +31,10 @@ public class IntakePivot extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     // Logger.processInputs("IntakePivot", inputs);
-    //Logger.recordOutput("IntakePivot Current Position", io.getPosition());
+    Logger.recordOutput("IntakePivot Current Position", io.getPosition());
     double pidMotorSpeed =
         pidController.calculate(io.getPosition(), targetPosition)
             + feedForward.calculate(targetPosition, 0);
-    ;
     Logger.recordOutput("IntakePivot Speed", pidMotorSpeed);
     setMotor(
         MathUtil.clamp((pidMotorSpeed), -IntakePivotConstants.MAX_VOLTAGE, IntakePivotConstants.MAX_VOLTAGE));
@@ -49,6 +48,7 @@ public class IntakePivot extends SubsystemBase {
     Logger.recordOutput("IntakePivot Target Position", position);
     System.out.println(io.getPosition() + " IntakePivot");
     targetPosition = position;
+    io.setPosition(position);
   }
 
   public void setIntakePivotSetpoint(double offset) {

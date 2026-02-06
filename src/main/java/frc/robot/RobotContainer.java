@@ -58,6 +58,7 @@ import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.wrist.Wrist;
 import frc.robot.subsystems.wrist.WristIOSim;
 import frc.robot.subsystems.wrist.WristIOTalonFX;
+import frc.robot.util.CommandPS5XboxControllerSim;
 import frc.robot.util.CommandXboxControllerSim;
 import frc.robot.util.FuelSim;
 
@@ -151,7 +152,8 @@ public class RobotContainer {
 
         turret = new Turret(new TurretIOSim());
 
-        driverController = new CommandXboxControllerSim(0);
+        driverController = new CommandPS5XboxControllerSim(0);
+        
 
         configureFuelSim();
 

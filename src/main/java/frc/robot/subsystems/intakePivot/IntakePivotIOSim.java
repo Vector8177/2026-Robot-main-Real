@@ -9,35 +9,27 @@ import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 
 public class IntakePivotIOSim implements IntakePivotIO {
     private final SingleJointedArmSim armSim = new SingleJointedArmSim(
             SIM_INTAKE_ARM_MOTOR,
-            GEARING,
+            4,
             SingleJointedArmSim.estimateMOI(INTAKE_ARM_LENGTH.in(Meters), INTAKE_ARM_MASS.in(Kilograms)),
             INTAKE_ARM_LENGTH.in(Meters),
-            Units.degreesToRadians(-360), // TODO: placeholder
-            Units.degreesToRadians(360), // TODO: placeholder
-            false,
-            0);// TODO: placeholder
+            Units.degreesToRadians(-360000), // TODO: placeholder
+            Units.degreesToRadians(360000), // TODO: placeholder
+            true,
+            INTAKE_ARM_STARTING_ANGLE.in(Radians));
 
     private final TalonFX arm = new TalonFX(MOTOR_ID);
 
     public IntakePivotIOSim() {
         TalonFXConfiguration config = new TalonFXConfiguration();
-    
-    // config.Slot0.kP =  kP;  
-    // config.Slot0.kI = kI;   
-    // config.Slot0.kD = kD;   
-    // config.Slot0.kV = kV;   
-    // config.Slot0.kS = kS;
-    // config.Slot0.kG = kG;
-
 
         arm.getConfigurator().apply(config, .005);
-        arm.setPosition(0);
         arm.setNeutralMode(NeutralModeValue.Brake);
 
     }
@@ -64,11 +56,11 @@ public class IntakePivotIOSim implements IntakePivotIO {
     }
 
     public void setPosition(double position) {
-        arm.setControl(new PositionVoltage(Radians.of(position)));
+        arm.setPosition(position);
     }
 
     public void setVoltage(double speed) {
-        arm.setControl(new VoltageOut(speed));
+        arm.setVoltage(speed);
     }
 
 }
