@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Pounds;
+import static edu.wpi.first.units.Units.Radians;
 
 import java.util.Set;
 
@@ -56,6 +57,8 @@ public final class Constants {
     public static final Distance INTAKE_OFFSET_X = Inches.of(17);
     public static final Distance INTAKE_BOUNDING_Y = Inches.of(26.5);
     public static final Distance INTAKE_BOUNDING_X = Inches.of(8.097393);
+
+    public static final int MAX_FUEL = 35;
   }
 
   public static final class ElevatorConstants {
@@ -98,13 +101,13 @@ public final class Constants {
 
 
     //DEFINITELY CHANGE, THIS IS A GUESS!!
-    public static final double INTAKE_POSITION = 1.3439d;
+    public static final double INTAKE_POSITION = Degrees.of(-90).in(Radians);
 
 
     //tune pid and svag later
-    public static final double kP = 1; // 1.5
+    public static final double kP = 10; // 1.5
     public static final double kI = 0;
-    public static final double kD = 0;
+    public static final double kD = 1;
 
     public static final double kS = 0.11237;
     public static final double kV = 0.56387;
@@ -112,7 +115,7 @@ public final class Constants {
     public static final double kG = 0.76416;
 
     // sim constants
-    public static final DCMotor SIM_INTAKE_ARM_MOTOR = DCMotor.getKrakenX60(2); //placeholder
+    public static final DCMotor SIM_INTAKE_ARM_MOTOR = DCMotor.getKrakenX60(1); //placeholder
     public static final double GEARING = 2; //placeholder
     public static final Distance INTAKE_ARM_LENGTH = Inches.of(12.935416);
     public static final Mass INTAKE_ARM_MASS = Pounds.of(11.638);

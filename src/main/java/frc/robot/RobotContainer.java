@@ -328,8 +328,8 @@ public class RobotContainer {
             Dimensions.INTAKE_OFFSET_X.plus(Dimensions.INTAKE_BOUNDING_X).in(Meters),
             -Dimensions.INTAKE_BOUNDING_Y.div(2).in(Meters),
             Dimensions.INTAKE_BOUNDING_Y.div(2).in(Meters),
-            intake::canArmIntake,
-            intake::doArmIntake);
+            intakePivot::canIntake,
+            intakePivot::intake);
 
     instance.start();
     SmartDashboard.putData(Commands.runOnce(() -> {

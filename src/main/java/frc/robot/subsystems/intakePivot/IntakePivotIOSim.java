@@ -16,13 +16,13 @@ import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 public class IntakePivotIOSim implements IntakePivotIO {
     private final SingleJointedArmSim armSim = new SingleJointedArmSim(
             SIM_INTAKE_ARM_MOTOR,
-            4,
+            40,
             SingleJointedArmSim.estimateMOI(INTAKE_ARM_LENGTH.in(Meters), INTAKE_ARM_MASS.in(Kilograms)),
             INTAKE_ARM_LENGTH.in(Meters),
             Units.degreesToRadians(-360000), // TODO: placeholder
             Units.degreesToRadians(360000), // TODO: placeholder
-            true,
-            INTAKE_ARM_STARTING_ANGLE.in(Radians));
+        true,
+            0);
 
     private final TalonFX arm = new TalonFX(MOTOR_ID);
 
@@ -52,7 +52,7 @@ public class IntakePivotIOSim implements IntakePivotIO {
     }
 
     public double getPosition() {
-        return arm.getPosition().getValueAsDouble();
+        return armSim.getAngleRads() - INTAKE_ARM_STARTING_ANGLE.in(Radians);
     }
 
     public void setPosition(double position) {

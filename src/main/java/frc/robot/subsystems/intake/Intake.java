@@ -30,14 +30,6 @@ public class Intake extends SubsystemBase {
     targetSpeed = speed;
   }
 
-  public boolean canArmIntake(){
-    return true;
-  }
-
-  public void doArmIntake(){
-
-  }
-
   @Override
   public void periodic() {
     io.updateInputs(inputs);

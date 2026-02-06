@@ -7,6 +7,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakePivotConstants;
 import frc.robot.subsystems.intakePivot.IntakePivotIO.IntakePivotIOInputs;
 
+import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Radians;
+import static frc.robot.Constants.IntakePivotConstants.INTAKE_POSITION;
+import static frc.robot.Constants.Dimensions.MAX_FUEL;
+
 import org.littletonrobotics.junction.Logger;
 
 public class IntakePivot extends SubsystemBase {
@@ -15,6 +20,7 @@ public class IntakePivot extends SubsystemBase {
   private final IntakePivotIOInputs inputs = new IntakePivotIOInputs();
   private double targetPosition;
   private ArmFeedforward feedForward;
+  private int fuels = 0;
 
   public IntakePivot(IntakePivotIO io) {
 
@@ -57,5 +63,16 @@ public class IntakePivot extends SubsystemBase {
 
   public boolean atSetpoint() {
     return pidController.atSetpoint();
+  }
+
+  public boolean canIntake(){
+    boolean isAtCorrectPosition =  Math.abs(io.getPosition() - INTAKE_POSITION) < Degrees.of(5).in(Radians);
+    boolean enoughCapacity = fuels <= MAX_FUEL;
+
+    return isAtCorrectPosition && enoughCapacity;
+  }
+
+  public void intake(){
+    fuels++;
   }
 }
