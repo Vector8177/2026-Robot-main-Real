@@ -98,11 +98,11 @@ public final class Constants {
     public static final int MAX_VOLTAGE = 12;
 
     public static final double LIMELIGHT_ANGLE = 33; //WILL NEED CHANGE
-    public static final double LIMELIGHT_HEIGHT_METERS = 15.25; //WILL NEED CHANGE
+    public static final double LIMELIGHT_HEIGHT_METERS = 16.5; //WILL NEED CHANGE
     public static final double TAG_HEIGHT_METERS = 44; //WILL NEED CHANGE
     public static final double DISTANCE_TAG_TO_TARGET = 23.75;
     public static final double DISTANCE_TAG_SIDE_TO_TARGET = 27.56923104d;
-    public static final double DISTANCE_BETWEEN_TAGS = 14d;
+    public static final double DISTANCE_BETWEEN_TAGS = 14.0;
     public static final double alpha = Math.abs(Math.toDegrees(Math.acos(DISTANCE_BETWEEN_TAGS / DISTANCE_TAG_SIDE_TO_TARGET)));
     public static final int[][] cIds = new int[][]{{10, 9}};//change later
     public static final int[] allId = new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
@@ -111,9 +111,9 @@ public final class Constants {
 
 
     //tune pid and svag later
-    public static final double kP = 1.5; // 1.5
+    public static final double kP = 2; // 1.75
     public static final double kI = 0.0;
-    public static final double kD = 0.1;
+    public static final double kD = 0.02; // 0.1
 
     public static final double kS = 0.11237;
     public static final double kV = 0.56387;

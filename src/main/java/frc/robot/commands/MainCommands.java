@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.IntakePivotConstants;
 import frc.robot.Constants.TurretConstants;
 import frc.robot.Constants.WristConstants;
+import frc.robot.LimelightHelpers;
+import frc.robot.LimelightHelpers.RawFiducial;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intakePivot.IntakePivot;
 import frc.robot.subsystems.turret.Turret;
@@ -58,12 +60,14 @@ public class MainCommands {
   }
 
 
-  public static Command turretFollow(Turret turret, DoubleSupplier gyro){
-    return runOnce(() -> turret.followCamera(true), turret);
+  public static Command turretFollow(Turret turret){
+    return runOnce(()-> turret.followCamera());
+      
+    //return runOnce(() -> turret.followCamera(true), turret);
   }
-  public static Command stopTurretFollow(Turret turret){
-    return runOnce(() -> turret.followCamera(false), turret);
-  }
+  // public static Command stopTurretFollow(Turret turret){
+  //   return runOnce(() -> turret.followCamera(false), turret);
+  // }
 
 
  

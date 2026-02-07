@@ -241,10 +241,9 @@ public class RobotContainer {
         .onTrue(MainCommands.runOuttake(intake))
         .onFalse(MainCommands.stopIntake(intake));
 
-    DoubleSupplier yawSupplier = () -> drive.getPose().getRotation().getDegrees();
+   
     driverController.b()
-        .onTrue(MainCommands.turretFollow(turret, yawSupplier)).onFalse(MainCommands.stopTurretFollow(turret));    
-    driverController.rightTrigger().onTrue(MainCommands.runIntake(intake)).onFalse(MainCommands.stopIntake(intake));
+        .onTrue(MainCommands.turretFollow(turret));
     driverController.leftTrigger().onTrue(MainCommands.runOuttake(intake)).onFalse(MainCommands.stopIntake(intake));
     
     operatorController.a().onTrue(MainCommands.stow(wrist, turret));
