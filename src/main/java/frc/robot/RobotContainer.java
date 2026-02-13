@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.Dimensions;
@@ -50,9 +51,15 @@ import frc.robot.subsystems.intakePivot.IntakePivot;
 import frc.robot.subsystems.intakePivot.IntakePivotIO;
 import frc.robot.subsystems.intakePivot.IntakePivotIOSim;
 import frc.robot.subsystems.intakePivot.IntakePivotIOTalonFX;
+import frc.robot.subsystems.intakePivot.IntakePivotVisualizer;
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterIOSim;
+import frc.robot.subsystems.shooter.ShooterIOTalonFX;
+import frc.robot.subsystems.shooter.ShooterVisualizer;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.TurretIOSim;
 import frc.robot.subsystems.turret.TurretIOTalonFX;
+import frc.robot.subsystems.turret.TurretVisualizer;
 // import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.wrist.Wrist;
@@ -82,6 +89,8 @@ public class RobotContainer {
   private final Climber climber;
   private final Wrist wrist;
   private final Turret turret;
+  private final Shooter shooter;
+
 //   private final Vision vision;
 
   // Controller
@@ -105,6 +114,8 @@ public class RobotContainer {
         wrist = new Wrist(new WristIOTalonFX());
 
         turret = new Turret(new TurretIOTalonFX());
+
+        shooter = new Shooter(new ShooterIOTalonFX());
 
         NamedCommands.registerCommand("Stop Intake", MainCommands.stopIntake(intake));
         NamedCommands.registerCommand("Run Intake", MainCommands.runIntake(intake));
@@ -154,6 +165,7 @@ public class RobotContainer {
 
         driverController = new CommandPS5XboxControllerSim(0);
         
+        shooter = new Shooter(new ShooterIOSim());
 
         configureFuelSim();
 
@@ -173,6 +185,8 @@ public class RobotContainer {
         wrist = new Wrist(new WristIOTalonFX());
         
         turret = new Turret(new TurretIOTalonFX());
+
+        shooter = new Shooter(new ShooterIOTalonFX());
 
         NamedCommands.registerCommand("Stop Intake", MainCommands.stopIntake(intake));
         NamedCommands.registerCommand("Run Intake", MainCommands.runIntake(intake));
@@ -311,6 +325,9 @@ public class RobotContainer {
     //     .leftBumper()
     //     .onTrue(MainCommands.turnTurretBackward(turret))
     //     .onFalse(MainCommands.stopTurret(turret));
+
+    driverController.rightBumper().onTrue(MainCommands.startTurret(shooter)).onTrue(new InstantCommand(() -> System.out.println("debug")));
+    driverController.rightBumper().onFalse(MainCommands.stopTurret(shooter));
   }
 
   private void configureFuelSim() {
@@ -347,5 +364,11 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return autoChooser.get();
+  }
+
+  public void configureShooterVisualizer(){
+    ShooterVisualizer.getInstance().setRobotPoseSupplier(drive::getPose);
+    ShooterVisualizer.getInstance().setTurretAngleSupplier(turret::getAngle);
+    ShooterVisualizer.getInstance().setFlywheelAngularVelocitySupplier(shooter::getAngularVelocity);
   }
 }

@@ -3,6 +3,7 @@ package frc.robot.subsystems.turret;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
 import frc.robot.LimelightHelpers.RawFiducial;
@@ -181,4 +182,8 @@ public class Turret extends SubsystemBase {
     LimelightHelpers.SetFiducialIDFiltersOverride("limelight-turret", TurretConstants.allId);
     
   } 
+
+  public Rotation3d getAngle(){
+    return new Rotation3d(0, 0, 0);
+  }
 }

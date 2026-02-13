@@ -28,6 +28,7 @@ public class IntakePivotIOSim implements IntakePivotIO {
 
     public IntakePivotIOSim() {
         TalonFXConfiguration config = new TalonFXConfiguration();
+        //TODO: add current limiting
 
         arm.getConfigurator().apply(config, .005);
         arm.setNeutralMode(NeutralModeValue.Brake);

@@ -18,6 +18,7 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -26,6 +27,7 @@ import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Pounds;
 import static edu.wpi.first.units.Units.Radians;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 import java.util.Set;
 
@@ -123,8 +125,17 @@ public final class Constants {
     public static final Angle INTAKE_ARM_STARTING_ANGLE = Degrees.of(90); //yaw of intake pivot when the robot first starts relative to the world's coordinate system
     public static final Angle INTAKE_ARM_EXPORTED_OFFSET_FROM_HORIZONTAL = Degrees.of(-11.838585);
   }
+  public static final class ShooterConstants {
+    public static final AngularVelocity SHOOTER_SPEED = RotationsPerSecond.of(10);
+    public static final DCMotor SHOOTER_MOTOR = DCMotor.getKrakenX60(2);
+    public static final double SHOOTER_GEARING = 26.0/15.0; //output to input
+    public static final double FLYWHEEL_TO_LAUNCHER_GEARING = 1.0/1.0; //TODO: placeholder
+    public static final Distance SHOOTER_WHEEL_RADIUS = Inches.of(3); //TODO: placeholder
+    public static final Translation3d SHOOTER_PIVOT = new Translation3d(-0.168275, 0, 0.4300016);
+  }
 
   public static final class TurretConstants {
+
     public static final int MOTOR_ID = 21;
     public static final int MAX_VOLTAGE = 12;
 
@@ -157,8 +168,6 @@ public final class Constants {
     public static final double pos1 = 5d;
     public static final double pos2 = 10d;
     public static final double pos3 = 20d;
-
-    public static final Translation3d TURRET_PIVOT = new Translation3d(-0.168275, 0, 0.4300016);
   }
 
   public static final class WristConstants {

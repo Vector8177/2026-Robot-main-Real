@@ -1,6 +1,10 @@
 package frc.robot.commands;
 
+import static edu.wpi.first.units.Units.Rotation;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
+import static edu.wpi.first.units.Units.Volts;
 import static edu.wpi.first.wpilibj2.command.Commands.*;
+import static frc.robot.Constants.ShooterConstants.SHOOTER_SPEED;
 
 import java.util.function.DoubleSupplier;
 
@@ -10,6 +14,7 @@ import frc.robot.Constants.TurretConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intakePivot.IntakePivot;
+import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.wrist.Wrist;
 
@@ -64,8 +69,13 @@ public class MainCommands {
   public static Command stopTurretFollow(Turret turret){
     return runOnce(() -> turret.followCamera(false), turret);
   }
-
-
+  
+  public static Command startTurret(Shooter shooter) {
+    return run(() -> shooter.setVoltage(Volts.of(12)), shooter);
+  }
+  public static Command stopTurret(Shooter shooter) {
+    return run(() -> shooter.setVoltage(Volts.of(0)), shooter);
+  }
  
 
   // Shuts hood down and unspools turret
