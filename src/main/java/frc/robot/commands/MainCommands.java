@@ -9,6 +9,7 @@ import static frc.robot.Constants.ShooterConstants.SHOOTER_SPEED;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Constants.IntakePivotConstants;
 import frc.robot.Constants.TurretConstants;
 import frc.robot.Constants.WristConstants;
@@ -71,9 +72,9 @@ public class MainCommands {
   }
   
   public static Command startTurret(Shooter shooter) {
-    return run(() -> shooter.setVoltage(Volts.of(12)), shooter);
+    return new RunCommand(() -> shooter.setVoltage(Volts.of(12)), shooter).finallyDo(() -> stopTurret(shooter));
   }
-  public static Command stopTurret(Shooter shooter) {
+  private static Command stopTurret(Shooter shooter) {
     return run(() -> shooter.setVoltage(Volts.of(0)), shooter);
   }
  

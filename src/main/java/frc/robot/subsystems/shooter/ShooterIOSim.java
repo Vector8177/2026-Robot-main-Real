@@ -17,7 +17,7 @@ public class ShooterIOSim implements ShooterIO {
         shooterSim = new FlywheelSim(
             LinearSystemId.createFlywheelSystem(
                 SHOOTER_MOTOR,
-                .01,  // Add to constants: 0.01 - 0.1 typical
+                .01,  // TODO: placeholer
                 SHOOTER_GEARING),
             SHOOTER_MOTOR);
     }

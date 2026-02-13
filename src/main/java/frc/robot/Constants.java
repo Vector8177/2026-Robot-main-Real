@@ -153,9 +153,14 @@ public final class Constants {
 
 
     //tune pid and svag later
-    public static final double kP = 1.5; // 1.5
-    public static final double kI = 0.0;
-    public static final double kD = 0.1;
+    public static final double y_kP = 1.5; // 1.5
+    public static final double y_kI = 0.0;
+    public static final double y_kD = 0.1;
+
+    public static final double z_kP = 1.5; // 1.5
+    public static final double z_kI = 0.0;
+    public static final double z_kD = 0.1;
+
 
     public static final double kS = 0.11237;
     public static final double kV = 0.56387;
@@ -168,6 +173,11 @@ public final class Constants {
     public static final double pos1 = 5d;
     public static final double pos2 = 10d;
     public static final double pos3 = 20d;
+
+    public static final DCMotor TURRET_Y_MOTOR = DCMotor.getKrakenX44(1);
+    public static final double TURRET_Y_GEARING = (12.0 / 44.0) * (18.0 / 48.0) * (18.0 / 18.0) * (15.0 / 15.0) * (10.0 / 185.0);
+    public static final DCMotor TURRET_Z_MOTOR = DCMotor.getKrakenX44(1);
+    public static final double TURRET_Z_GEARING = (12.0 / 40.0) * (26.0 / 40.0) * (10.0 / 77.0);
   }
 
   public static final class WristConstants {

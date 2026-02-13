@@ -326,8 +326,7 @@ public class RobotContainer {
     //     .onTrue(MainCommands.turnTurretBackward(turret))
     //     .onFalse(MainCommands.stopTurret(turret));
 
-    driverController.rightBumper().onTrue(MainCommands.startTurret(shooter)).onTrue(new InstantCommand(() -> System.out.println("debug")));
-    driverController.rightBumper().onFalse(MainCommands.stopTurret(shooter));
+    driverController.rightBumper().toggleOnTrue(MainCommands.startTurret(shooter));
   }
 
   private void configureFuelSim() {

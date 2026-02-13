@@ -1,7 +1,10 @@
 package frc.robot.subsystems.turret;
 
+
 import org.littletonrobotics.junction.AutoLog;
 
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.units.measure.Voltage;
 public interface TurretIO {
   @AutoLog
   class TurretIOInputs {
@@ -11,14 +14,10 @@ public interface TurretIO {
   }
 
   default void updateInputs(TurretIOInputs inputs) {}
+  default void periodic(){}
 
-  default void setPosition(double position) {}
+  void applyVoltsY(Voltage a);
+  void applyVoltsZ(Voltage a);
 
-  default void setVoltage(double speed) {}
-
-  default double getPosition() {
-    return 0;
-  }
-
-  
+  Rotation3d getRotation();
 }
