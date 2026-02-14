@@ -98,7 +98,7 @@ public final class Constants {
     public static final int MAX_VOLTAGE = 12;
 
     public static final double LIMELIGHT_ANGLE = 33; //WILL NEED CHANGE
-    public static final double LIMELIGHT_HEIGHT_METERS = 16.5; //WILL NEED CHANGE
+    public static final double LIMELIGHT_HEIGHT_METERS = 19; //WILL NEED CHANGE
     public static final double TAG_HEIGHT_METERS = 44; //WILL NEED CHANGE
     public static final double DISTANCE_TAG_TO_TARGET = 23.75;
     public static final double DISTANCE_TAG_SIDE_TO_TARGET = 27.56923104d;

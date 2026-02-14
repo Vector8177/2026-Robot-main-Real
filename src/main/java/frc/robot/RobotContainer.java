@@ -13,6 +13,8 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.swerve.SwerveDrivetrain;
+import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
 /// import com.pathplanner.lib.*;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -46,6 +48,7 @@ import frc.robot.subsystems.intakePivot.IntakePivotIO;
 import frc.robot.subsystems.intakePivot.IntakePivotIOTalonFX;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.TurretIOTalonFX;
+import frc.robot.subsystems.vision.Vision;
 // import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.wrist.Wrist;
@@ -69,7 +72,7 @@ public class RobotContainer {
   private final Climber climber;
   private final Wrist wrist;
   private final Turret turret;
-//   private final Vision vision;
+  private final Vision vision;
 
   // Controller
   private final CommandXboxController driverController = new CommandXboxController(0);
@@ -110,11 +113,11 @@ public class RobotContainer {
 
         NamedCommands.registerCommand("Auto Align Left", new AutoAlign(drive, false));
         NamedCommands.registerCommand("Auto Align Right", new AutoAlign(drive, true));
-        // vision =
-        //     new Vision(
-        //         drive::addVisionMeasurement,
-        //         new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation),
-                // new VisionIOLimelight(VisionConstants.camera1Name, drive::getRotation));
+        vision =
+            new Vision(
+                drive::addVisionMeasurement,
+                new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation),
+                new VisionIOLimelight(VisionConstants.camera1Name, drive::getRotation));
       }
 
       case SIM -> {
@@ -137,10 +140,10 @@ public class RobotContainer {
 
         turret = new Turret(new TurretIOTalonFX());
 
-        // vision =
-        //     new Vision(
-        //         drive::addVisionMeasurement,
-        //         new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation));
+        vision =
+            new Vision(
+                drive::addVisionMeasurement,
+                new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation));
       }
 
       default -> {
@@ -168,11 +171,11 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {});
 
-        // vision =
-        //     new Vision(
-        //         drive::addVisionMeasurement,
-        //         new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation),
-        //         new VisionIOLimelight(VisionConstants.camera1Name, drive::getRotation));
+        vision =
+            new Vision(
+                drive::addVisionMeasurement,
+                new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation),
+                new VisionIOLimelight(VisionConstants.camera1Name, drive::getRotation));
       }
     }
 
@@ -242,17 +245,13 @@ public class RobotContainer {
         .onFalse(MainCommands.stopIntake(intake));
 
    
-    driverController.b()
-        .onTrue(MainCommands.turretFollow(turret));
+    // driverController.b()
+    //     .onTrue(MainCommands.turretFollow(turret));
+    driverController.b().onTrue(MainCommands.test(turret));
+    driverController.x().onTrue(MainCommands.stow(turret));
     driverController.leftTrigger().onTrue(MainCommands.runOuttake(intake)).onFalse(MainCommands.stopIntake(intake));
     
-    operatorController.a().onTrue(MainCommands.stow(wrist, turret));
-    operatorController.b().onTrue(MainCommands.stowIntake(intakePivot));
-    operatorController.x().onTrue(MainCommands.intakePosition(intakePivot));
 
-    operatorController.rightTrigger().onTrue(MainCommands.runIntake(intake)).onFalse(MainCommands.stopIntake(intake));
-    operatorController.leftTrigger().onTrue(MainCommands.runOuttake(intake)).onFalse(MainCommands.stopIntake(intake));
-    
     // operatorController
     //     .povRight()
     //     .onTrue(
@@ -275,13 +274,13 @@ public class RobotContainer {
 
 
     // operatorController
-    //     .rightBumper()
-    //     .onTrue(MainCommands.turnTurret(turret))
-    //     .onFalse(MainCommands.stopTurret(turret));
+      //   .rightBumper()
+       //  .onTrue(MainCommands.turnTurret(turret))
+        // .onFalse(MainCommands.stopTurret(turret));
     // operatorController
-    //     .leftBumper()
-    //     .onTrue(MainCommands.turnTurretBackward(turret))
-    //     .onFalse(MainCommands.stopTurret(turret));
+      //   .leftBumper()
+        //.onTrue(MainCommands.turnTurretBackward(turret))
+         //.onFalse(MainCommands.stopTurret(turret));
   }
 
   /**

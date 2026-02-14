@@ -65,6 +65,10 @@ public class MainCommands {
       
     //return runOnce(() -> turret.followCamera(true), turret);
   }
+
+  public static Command test(Turret turret){
+    return runOnce((() -> turret.zero()));
+  }
   // public static Command stopTurretFollow(Turret turret){
   //   return runOnce(() -> turret.followCamera(false), turret);
   // }
@@ -73,9 +77,9 @@ public class MainCommands {
  
 
   // Shuts hood down and unspools turret
-  public static Command stow(Wrist wrist, Turret turret) {
+  public static Command stow(Turret turret) {
     return sequence(
-        runOnce(() -> wrist.setPosition(0), wrist),
+        //runOnce(() -> wrist.setPosition(0), wrist),
         runOnce(() -> turret.setPosition(0), turret));
   }
 

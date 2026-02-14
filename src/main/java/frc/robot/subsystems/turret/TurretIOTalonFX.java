@@ -1,5 +1,6 @@
 package frc.robot.subsystems.turret;
 
+import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -11,11 +12,12 @@ import frc.robot.Constants.TurretConstants;;
 public class TurretIOTalonFX implements TurretIO {
   private final TalonFX turretMotor;
   private final TalonFXConfiguration configuration;
+  private final CANBus canbus = new CANBus("Turret Canivore");
   // private final DigitalInput input;
   // private final DutyCycleEncoder encoder;
 
   public TurretIOTalonFX() {
-    turretMotor = new TalonFX(TurretConstants.MOTOR_ID);
+    turretMotor = new TalonFX(TurretConstants.MOTOR_ID, canbus);
     configuration = new TalonFXConfiguration();
 
     turretMotor.getConfigurator().apply(configuration, .05);

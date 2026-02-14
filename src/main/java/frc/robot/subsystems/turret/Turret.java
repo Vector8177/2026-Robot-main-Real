@@ -30,7 +30,9 @@ public class Turret extends SubsystemBase {
         double L1 = -1;
         double L2 = -1;
         double beta = -1;
+        double betap = -1;
         double phi = -1;
+        double phip = -1;
         double thetap1 = -1;
         double thetap2 = -1;
         double Sx = -1;
@@ -39,13 +41,16 @@ public class Turret extends SubsystemBase {
         double theta = -1;
         double y1 = -1;
         double y2 = -1;
+        int casee = -1;
+        double d1 = -1;
+        double d2 = -1;
 
   public Turret(TurretIO io) {
 
     this.io = io;
     pidController = new PIDController(TurretConstants.kP, TurretConstants.kI, TurretConstants.kD);
     pidController.setTolerance(.2);
-    follow = false; 
+    follow = false;
     gyro = null;
     feedForward =
         new ArmFeedforward(
@@ -96,6 +101,7 @@ public class Turret extends SubsystemBase {
       Logger.recordOutput("Theta2", theta2);
       Logger.recordOutput("DelH", delH);
       Logger.recordOutput("beta", beta);
+      Logger.recordOutput("betap", betap);
       Logger.recordOutput("S", S);
       Logger.recordOutput("Sx", Sx);
       Logger.recordOutput("Sy", Sy);
@@ -108,6 +114,10 @@ public class Turret extends SubsystemBase {
       Logger.recordOutput("Phi", phi);
       Logger.recordOutput("TY - CM", y1);
       Logger.recordOutput("TY - Left", y2);
+      Logger.recordOutput("Case", casee);
+      Logger.recordOutput("PhiP", phip);
+      Logger.recordOutput("d1", d1);
+      Logger.recordOutput("d2", d2);
     }
 
   public void setMotor(double voltage) {
@@ -162,6 +172,7 @@ public class Turret extends SubsystemBase {
         double L1 = 0d;
         double L2 = 0d;
         double beta = 0d;
+        double betap = 0d;
         double phi = 0d;
         double thetap1 = 0d;
         double thetap2 = 0d;
@@ -174,34 +185,41 @@ public class Turret extends SubsystemBase {
         for(RawFiducial f : fiducials){
           int id = f.id;
           if(id==TurretConstants.cIds[0][0]){
-            theta1 = f.txnc;
             this.y1 = f.tync;
+            theta1 = f.txnc;
+
+            d1 = f.distToCamera;
             L1 = (delH)/(Math.tan(Math.toRadians(TurretConstants.LIMELIGHT_ANGLE+y1)));
           }
           else{
             this.y2 = f.tync;
             theta2 = f.txnc;
+            d2 = f.distToCamera; 
             L2 = (delH)/(Math.tan(Math.toRadians(TurretConstants.LIMELIGHT_ANGLE+y2)));
           }
         }
         beta = Math.toDegrees(Math.asin((L2*Math.sin(Math.toRadians((theta1-theta2))) / TurretConstants.DISTANCE_BETWEEN_TAGS)));
-        phi = Math.toDegrees(Math.asin((L1*Math.sin(Math.toRadians((theta1-theta2))) / TurretConstants.DISTANCE_BETWEEN_TAGS)));
-
+        betap = Math.toDegrees(Math.acos((L2*L2-L1*L1-Math.pow(TurretConstants.DISTANCE_BETWEEN_TAGS, 2))/(-2*(L1)*(TurretConstants.DISTANCE_BETWEEN_TAGS))));
+        phip = Math.toDegrees(Math.asin((L1*Math.sin(Math.toRadians((theta1-theta2))) / TurretConstants.DISTANCE_BETWEEN_TAGS)));
+        phi = 180-beta-(theta1-theta2);
 
         if(phi>90 && beta<90){
           thetap1 = 90 - beta;
           thetap2 = -Math.abs(theta2 - theta1) + thetap1; //Check
+          casee = 1;
         }
         else if(phi<90 && beta>90){
           thetap1 = beta-90;
           thetap2 = -Math.abs(theta1-theta2)+thetap1;
           thetap1 = -thetap1;
           thetap2 = -thetap2;
+          casee = 3;
         }
-        else{
-          thetap1 = 90-beta;
-          thetap2 = Math.abs(theta1)+theta2-thetap1;
-        }
+        // else{
+        //   thetap1 = 90-beta;
+        //   thetap2 = Math.abs(theta1)+theta2-thetap1;
+        //   casee = 2;
+        // }
 
 
 
@@ -277,6 +295,7 @@ public class Turret extends SubsystemBase {
     this.Sx = Sx;
     this.Sy = Sy;
     this.beta = beta;
+    this.betap = betap;
     this.phi = phi;
     this.theta1 = theta1;
     this.theta2 = theta2;
@@ -284,4 +303,9 @@ public class Turret extends SubsystemBase {
     this.thetap2 = thetap2;
     
   } 
+  public void zero(){
+    double x = LimelightHelpers.getTX("limelight-turret");
+    setTurretSetpoint(x/36);
+    this.theta = x/36;
+  }
 }
