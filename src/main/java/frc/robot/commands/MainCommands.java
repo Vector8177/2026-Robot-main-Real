@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Rotation;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Volts;
@@ -10,12 +11,15 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.Constants.IntakePivotConstants;
 import frc.robot.Constants.TurretConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intakePivot.IntakePivot;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterIO;
+import frc.robot.subsystems.shooter.ShooterVisualizer;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.wrist.Wrist;
 
@@ -38,6 +42,9 @@ public class MainCommands {
   // public static Command stopTurret(Turret turret){
   //   return runOnce(()-> turret.setSpeed(.0), turret);}
   
+  public static Command launchFuel() {
+    return runOnce(ShooterVisualizer.getInstance()::launchFuel);
+  }
   
   public static Command stopIntake(Intake intake) {
     return runOnce(() -> intake.setSpeed(0), intake);
@@ -72,18 +79,31 @@ public class MainCommands {
   }
   
   public static Command startTurret(Shooter shooter) {
-    return new RunCommand(() -> shooter.setVoltage(Volts.of(12)), shooter).finallyDo(() -> stopTurret(shooter));
+    return new StartEndCommand(
+      () -> shooter.setVoltage(Volts.of(12)),
+      () -> shooter.setVoltage(Volts.of(0)), 
+      shooter);
   }
-  private static Command stopTurret(Shooter shooter) {
-    return run(() -> shooter.setVoltage(Volts.of(0)), shooter);
+
+  public static Command turretZRot(Turret turret){
+    return runOnce(() -> turret.addZAngle(Degrees.of(5)), turret);
+  }
+
+  public static Command turretYRot(Turret turret){
+    return runOnce(() -> turret.addYAngle(Degrees.of(5)), turret);
+  }
+
+  public static Command toggleDirection(Turret turret){
+    return runOnce(() -> turret.toggleDirection(), turret);
   }
  
 
   // Shuts hood down and unspools turret
   public static Command stow(Wrist wrist, Turret turret) {
     return sequence(
-        runOnce(() -> wrist.setPosition(0), wrist),
-        runOnce(() -> turret.setPosition(0), turret));
+        runOnce(() -> wrist.setPosition(0), wrist) //,
+        // runOnce(() -> turret.set(0), turret)
+        );
   }
 
   public static Command intakePosition(IntakePivot intakePivot){

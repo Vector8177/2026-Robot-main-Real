@@ -168,6 +168,8 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIOSim());
 
         configureFuelSim();
+        configureShooterVisualizer();
+
 
         // vision =
         //     new Vision(
@@ -268,20 +270,20 @@ public class RobotContainer {
     //             () -> -driverController.getRightX() * .5));
     
 
-    driverController
-        .rightTrigger()
-        .onTrue(MainCommands.runIntake(intake))
-        .onFalse(MainCommands.stopIntake(intake));
-    driverController
-        .leftTrigger()
-        .onTrue(MainCommands.runOuttake(intake))
-        .onFalse(MainCommands.stopIntake(intake));
+    // driverController
+    //     .rightTrigger()
+    //     .onTrue(MainCommands.runIntake(intake))
+    //     .onFalse(MainCommands.stopIntake(intake));
+    // driverController
+    //     .leftTrigger()
+    //     .onTrue(MainCommands.runOuttake(intake))
+    //     .onFalse(MainCommands.stopIntake(intake));
 
     DoubleSupplier yawSupplier = () -> drive.getPose().getRotation().getDegrees();
     driverController.b()
         .onTrue(MainCommands.turretFollow(turret, yawSupplier)).onFalse(MainCommands.stopTurretFollow(turret));    
-    driverController.rightTrigger().onTrue(MainCommands.runIntake(intake)).onFalse(MainCommands.stopIntake(intake));
-    driverController.leftTrigger().onTrue(MainCommands.runOuttake(intake)).onFalse(MainCommands.stopIntake(intake));
+    // driverController.rightTrigger().onTrue(MainCommands.runIntake(intake)).onFalse(MainCommands.stopIntake(intake));
+    // driverController.leftTrigger().onTrue(MainCommands.runOuttake(intake)).onFalse(MainCommands.stopIntake(intake));
     
     // operatorController.a().onTrue(MainCommands.stow(wrist, turret));
     // operatorController.b().onTrue(MainCommands.stowIntake(intakePivot));
@@ -294,8 +296,9 @@ public class RobotContainer {
     driverController.b().onTrue(MainCommands.stowIntake(intakePivot));
     driverController.x().onTrue(MainCommands.intakePosition(intakePivot));
 
-    driverController.rightTrigger().onTrue(MainCommands.runIntake(intake)).onFalse(MainCommands.stopIntake(intake));
-    driverController.leftTrigger().onTrue(MainCommands.runOuttake(intake)).onFalse(MainCommands.stopIntake(intake));
+    // driverController.rightTrigger().onTrue(MainCommands.runIntake(intake)).onFalse(MainCommands.stopIntake(intake));
+    // driverController.leftTrigger().onTrue(MainCommands.runOuttake(intake)).onFalse(MainCommands.stopIntake(intake));
+
     // operatorController
     //     .povRight()
     //     .onTrue(
@@ -327,6 +330,10 @@ public class RobotContainer {
     //     .onFalse(MainCommands.stopTurret(turret));
 
     driverController.rightBumper().toggleOnTrue(MainCommands.startTurret(shooter));
+    driverController.rightTrigger().onTrue(MainCommands.toggleDirection(turret));
+    driverController.y().onTrue(MainCommands.turretYRot(turret));
+    driverController.a().onTrue(MainCommands.turretZRot(turret));
+    driverController.leftBumper().onTrue(MainCommands.launchFuel());
   }
 
   private void configureFuelSim() {
@@ -367,7 +374,7 @@ public class RobotContainer {
 
   public void configureShooterVisualizer(){
     ShooterVisualizer.getInstance().setRobotPoseSupplier(drive::getPose);
-    ShooterVisualizer.getInstance().setTurretAngleSupplier(turret::getAngle);
+    ShooterVisualizer.getInstance().setTurretAngleSupplier(turret::getRotation);
     ShooterVisualizer.getInstance().setFlywheelAngularVelocitySupplier(shooter::getAngularVelocity);
   }
 }

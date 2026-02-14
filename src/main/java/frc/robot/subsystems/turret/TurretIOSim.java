@@ -1,18 +1,10 @@
 package frc.robot.subsystems.turret;
 
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.PositionVoltage;
-import com.ctre.phoenix6.hardware.TalonFX;
-
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.system.LinearSystem;
-import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import edu.wpi.first.wpilibj.simulation.LinearSystemSim;
 
 import static edu.wpi.first.units.Units.Volts;
 import static frc.robot.Constants.TurretConstants.*;
@@ -29,22 +21,27 @@ public class TurretIOSim implements TurretIO{
             TURRET_Y_MOTOR);
         zMtr = new DCMotorSim(
             LinearSystemId.createDCMotorSystem(TURRET_Z_MOTOR, .001, TURRET_Z_GEARING),  //TODO: fix MOI
-            TURRET_Y_MOTOR);
-        
-        CurrentLimitsConfigs currentConfig = new CurrentLimitsConfigs();
-        currentConfig.StatorCurrentLimit = 80;
-        currentConfig.StatorCurrentLimitEnable = true;
+            TURRET_Z_MOTOR);
+    }
 
+    @Override
+    public void periodic() {
+        yMtr.update(0.02);
+        zMtr.update(0.02);
+
+        TurretVisualizer.getInstance().update(getRotation());
     }
 
     @Override
     public void applyVoltsY(Voltage v) {
-        yMtr.setInputVoltage(v.in(Volts));
+        double clampedVoltage = MathUtil.clamp(v.in(Volts), -12, 12);
+        yMtr.setInputVoltage(clampedVoltage);
     }
 
     @Override
     public void applyVoltsZ(Voltage v) {
-        zMtr.setInputVoltage(v.in(Volts));
+        double clampedVoltage = MathUtil.clamp(v.in(Volts), -12, 12);
+        zMtr.setInputVoltage(clampedVoltage);
     }
 
     @Override

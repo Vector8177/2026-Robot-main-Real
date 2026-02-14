@@ -4,8 +4,27 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.units.measure.Angle;
 // import edu.wpi.first.wpilibj.DigitalInput;
 // import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.units.measure.Voltage;
 
 public class TurretIOTalonFX implements TurretIO {
+
+  @Override
+  public void applyVoltsY(Voltage a) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'applyVoltsY'");
+  }
+
+  @Override
+  public void applyVoltsZ(Voltage a) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'applyVoltsZ'");
+  }
+
+  @Override
+  public Rotation3d getRotation() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getRotation'");
+  }
   // private final TalonFX turretMotor;
   // private final TalonFXConfiguration configuration;
   // // private final DigitalInput input;

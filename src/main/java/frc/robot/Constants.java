@@ -130,8 +130,7 @@ public final class Constants {
     public static final DCMotor SHOOTER_MOTOR = DCMotor.getKrakenX60(2);
     public static final double SHOOTER_GEARING = 26.0/15.0; //output to input
     public static final double FLYWHEEL_TO_LAUNCHER_GEARING = 1.0/1.0; //TODO: placeholder
-    public static final Distance SHOOTER_WHEEL_RADIUS = Inches.of(3); //TODO: placeholder
-    public static final Translation3d SHOOTER_PIVOT = new Translation3d(-0.168275, 0, 0.4300016);
+    public static final Distance SHOOTER_WHEEL_RADIUS = Inches.of(4); //TODO: placeholder
   }
 
   public static final class TurretConstants {
@@ -153,20 +152,24 @@ public final class Constants {
 
 
     //tune pid and svag later
-    public static final double y_kP = 1.5; // 1.5
-    public static final double y_kI = 0.0;
-    public static final double y_kD = 0.1;
+    public static final double y_kP = 2; // 1.5
+    public static final double y_kI = 0.1;
+    public static final double y_kD = 0.7;
 
-    public static final double z_kP = 1.5; // 1.5
-    public static final double z_kI = 0.0;
-    public static final double z_kD = 0.1;
+    public static final double z_kP = 2; // 1.5
+    public static final double z_kI = 0.1;
+    public static final double z_kD = 0.7;
 
 
-    public static final double kS = 0.11237;
-    public static final double kV = 0.56387;
-    public static final double kA = 0.041488;
-    public static final double kG = 0.76416;
+    public static final double y_kS = 0; //.11237;
+    public static final double y_kV = 0.0;
+    public static final double y_kA = 0; //.041488;
+    public static final double y_kG = 0; //.76416; changed to 0 for sim
 
+    public static final double z_kS = 0; //.11237;
+    public static final double z_kV = 0; //.56387
+    public static final double z_kA = 0; //.041488;
+    public static final double z_kG = 0; //.76416; changed to 0 for sim
 
     //Most likely not needed later
     public static final double posO = 0d;
@@ -178,6 +181,7 @@ public final class Constants {
     public static final double TURRET_Y_GEARING = (12.0 / 44.0) * (18.0 / 48.0) * (18.0 / 18.0) * (15.0 / 15.0) * (10.0 / 185.0);
     public static final DCMotor TURRET_Z_MOTOR = DCMotor.getKrakenX44(1);
     public static final double TURRET_Z_GEARING = (12.0 / 40.0) * (26.0 / 40.0) * (10.0 / 77.0);
+    public static final Translation3d TURRET_PIVOT = new Translation3d(-0.168275, 0, 0.4300016);
   }
 
   public static final class WristConstants {

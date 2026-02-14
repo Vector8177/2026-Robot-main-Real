@@ -3,7 +3,9 @@ package frc.robot.subsystems.turret;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.MutAngle;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
@@ -11,6 +13,8 @@ import frc.robot.LimelightHelpers.RawFiducial;
 import frc.robot.RobotContainer;
 
 import static edu.wpi.first.units.Units.Degree;
+import static edu.wpi.first.units.Units.Radians;
+import static edu.wpi.first.units.Units.Volts;
 import static frc.robot.Constants.TurretConstants.*;
 import frc.robot.subsystems.turret.TurretIO.TurretIOInputs;
 
@@ -22,13 +26,19 @@ import com.ctre.phoenix6.configs.TorqueCurrentConfigs;
 
 public class Turret extends SubsystemBase {
   private final PIDController yPIDController;
+  private final SimpleMotorFeedforward yFeedForward;
   private final PIDController zPIDController;
+  private final SimpleMotorFeedforward zFeedForward;
 
   private final TurretIO io;
-  private final TurretIOInputs inputs = new TurretIOInputs();
 
   private final MutAngle zGoalAngle = Degree.mutable(0);
   private final MutAngle yGoalAngle = Degree.mutable(0);
+
+  private final TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
+
+  private boolean dir;
+
 
 
   // private double targetPosition;
@@ -39,12 +49,15 @@ public class Turret extends SubsystemBase {
   // private double L2;
 
   public Turret(TurretIO io) {
-
     this.io = io;
     yPIDController = new PIDController(y_kP, y_kI, y_kD);
     yPIDController.setTolerance(.2);
     zPIDController = new PIDController(z_kP, z_kI, z_kD);
     zPIDController.setTolerance(.2);
+    yFeedForward =
+        new SimpleMotorFeedforward(y_kS, y_kV, y_kA);
+    zFeedForward =
+        new SimpleMotorFeedforward(z_kS, z_kV, z_kA);
 
     // follow = false; 
     // gyro = null;
@@ -56,10 +69,38 @@ public class Turret extends SubsystemBase {
     // this.L2 = -1;
   }
 
+  private void updateInputs(){
+    Rotation3d rotation = io.getRotation();
+
+    inputs.yAngle.mut_replace(Radians.of(rotation.getY()));
+    inputs.zAngle.mut_replace(Radians.of(rotation.getZ()));
+
+    inputs.yGoalAngle.mut_replace(yGoalAngle);
+    inputs.zGoalAngle.mut_replace(zGoalAngle);
+
+    Logger.processInputs("Turret", inputs);
+  }
+
+  //used for debugging
+  public void toggleDirection(){
+    dir = !dir;
+  }
+
   @Override
   public void periodic() {
-    io.updateInputs(inputs);
     io.periodic();
+    updateInputs();
+
+    Rotation3d rotation = io.getRotation();
+    double yPIDOut = yPIDController.calculate(rotation.getY(), yGoalAngle.in(Radians));
+    double zPIDOut = zPIDController.calculate(rotation.getZ(), zGoalAngle.in(Radians));
+    double yFeedForwardOut = yFeedForward.calculate(yGoalAngle.in(Radians));
+    double zFeedForwardOut = zFeedForward.calculate(zGoalAngle.in(Radians));
+    
+    io.applyVoltsY(Volts.of(yPIDOut + yFeedForwardOut));
+    io.applyVoltsZ(Volts.of(zPIDOut + zFeedForwardOut));
+
+
     // Logger.processInputs("Wrist", inputs);
     //Logger.recordOutput("Wrist Current Position", io.getPosition());
     //System.out.println("TX --> "+LimelightHelpers.getTX("limelight-right"));
@@ -85,38 +126,38 @@ public class Turret extends SubsystemBase {
     //         + feedForward.calculate(targetPosition, 0);
     // ;
     // // Logger.recordOutput("Wrist Speed", pidMotorSpeed);
-     double pidMotorSpeed =
-        pidController.calculate(io.getPosition(), targetPosition)
-            + feedForward.calculate(targetPosition, 0);
-      setMotor(
-        MathUtil.clamp((pidMotorSpeed), -TurretConstants.MAX_VOLTAGE, TurretConstants.MAX_VOLTAGE));
-    Logger.recordOutput("Turret Target Position", targetPosition);
-    Logger.recordOutput("Turret Current Position", io.getPosition());
-    //System.out.println("L1: "+x);
-    Logger.recordOutput("L1", L1);
-    Logger.recordOutput("L2", L2);
-    RawFiducial[] limelight = LimelightHelpers.getRawFiducials("limelight-turret");
-    if(limelight.length > 0){
-          Logger.recordOutput("TX", limelight[0].txnc); //wont work in sim
+    //  double pidMotorSpeed =
+    //     pidController.calculate(io.getPosition(), targetPosition)
+    //         + feedForward.calculate(targetPosition, 0);
+    //   setMotor(
+    //     MathUtil.clamp((pidMotorSpeed), -TurretConstants.MAX_VOLTAGE, TurretConstants.MAX_VOLTAGE));
+    // Logger.recordOutput("Turret Target Position", targetPosition);
+    // Logger.recordOutput("Turret Current Position", io.getPosition());
+    // //System.out.println("L1: "+x);
+    // Logger.recordOutput("L1", L1);
+    // Logger.recordOutput("L2", L2);
+    // RawFiducial[] limelight = LimelightHelpers.getRawFiducials("limelight-turret");
+    // if(limelight.length > 0){
+    //       Logger.recordOutput("TX", limelight[0].txnc); //wont work in sim
+    // }
+
+    
+  }
+
+  public void setYAngle(Angle a) {
+    yGoalAngle.mut_replace(a);
+  }
+
+  public void addYAngle(Angle delta) {
+    yGoalAngle.mut_acc(delta.times(dir ? 1 : -1));
     }
+
+  public void addZAngle(Angle delta) {
+    zGoalAngle.mut_acc(delta.times(dir ? 1 : -1));
   }
 
-  public void setMotor(double voltage) {
-    io.setVoltage(voltage);
-  }
-
-  public void setPosition(double position) {
-    Logger.recordOutput("Turret Target Position", position);
-    System.out.println(io.getPosition() + " Turret");
-    targetPosition = position;
-  }
-
-  public void setTurretSetpoint(double offset) {
-    targetPosition = (io.getPosition() + offset);
-  }
-
-  public boolean atSetpoint() {
-    return pidController.atSetpoint();
+  public void setZAngle(Angle a) {
+    zGoalAngle.mut_replace(a);
   }
 
   public void followGyro(boolean follow, DoubleSupplier gyro){
@@ -196,7 +237,7 @@ public class Turret extends SubsystemBase {
     
   } 
 
-  public Rotation3d getAngle(){
-    return new Rotation3d(0, 0, 0);
+  public Rotation3d getRotation(){
+    return io.getRotation();
   }
 }
