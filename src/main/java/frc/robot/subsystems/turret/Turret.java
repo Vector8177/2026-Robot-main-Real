@@ -60,6 +60,9 @@ public class Turret extends SubsystemBase {
   @Override
   public void periodic() {
     io.updateInputs(inputs);
+    double x = LimelightHelpers.getTX("limelight-turret");
+    targetPosition = targetPosition+x/36;
+    this.theta = x/36;
     // Logger.processInputs("Wrist", inputs);
     //Logger.recordOutput("Wrist Current Position", io.getPosition());
     //System.out.println("TX --> "+LimelightHelpers.getTX("limelight-right"));
@@ -305,7 +308,7 @@ public class Turret extends SubsystemBase {
   } 
   public void zero(){
     double x = LimelightHelpers.getTX("limelight-turret");
-    setTurretSetpoint(x/36);
+    targetPosition = targetPosition+x/36;
     this.theta = x/36;
   }
 }
