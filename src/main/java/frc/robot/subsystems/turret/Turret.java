@@ -44,6 +44,7 @@ public class Turret extends SubsystemBase {
         int casee = -1;
         double d1 = -1;
         double d2 = -1;
+        int time = 1;
 
   public Turret(TurretIO io) {
 
@@ -55,51 +56,30 @@ public class Turret extends SubsystemBase {
     feedForward =
         new ArmFeedforward(
             TurretConstants.kS, TurretConstants.kG, TurretConstants.kV, TurretConstants.kA);
-  }
+    }
 
   @Override
   public void periodic() {
     io.updateInputs(inputs);
-    double x = LimelightHelpers.getTX("limelight-turret");
-    targetPosition = targetPosition+x/36;
-    this.theta = x/36;
-    // Logger.processInputs("Wrist", inputs);
-    //Logger.recordOutput("Wrist Current Position", io.getPosition());
-    //System.out.println("TX --> "+LimelightHelpers.getTX("limelight-right"));
-    // if(follow && LimelightHelpers.getTV("limelight-right") && gyro != null){
-    //   // double distance = (TurretConstants.TAG_HEIGHT_METERS-TurretConstants.LIMELIGHT_HEIGHT_METERS)/
-    //   //   (Math.tan(Math.toRadians(TurretConstants.LIMELIGHT_ANGLE-LimelightHelpers.getTY("limelight-right"))));
 
-    //   // double angle = io.getPosition()-gyro.getAsDouble()-LimelightHelpers.getTX("limelight-right");
-    //   // double x = Math.sqrt(Math.pow(TurretConstants.DISTANCE_TAG_TO_TARGET, 2)+Math.pow(distance, 2)
-    //   //           -2*TurretConstants.DISTANCE_TAG_TO_TARGET*distance*Math.cos(Math.toRadians(180-angle)));
-      
+    time++;
 
-
-    //   // double theta = Math.asin((TurretConstants.DISTANCE_TAG_TO_TARGET*Math.sin(Math.toRadians(180-angle)))/x)
-    //   //   +LimelightHelpers.getTX("limelight-right");
-    //   // setTurretSetpoint(-theta/360.0);
-
-    //   setTurretSetpoint(LimelightHelpers.getTX("limelight-right"));
-    // }
+    if(time%25==0 && time>=50){
+      move();
+      time = 51;
+    }
     
-    // double pidMotorSpeed =
-    //     pidController.calculate(io.getPosition(), targetPosition)
-    //         + feedForward.calculate(targetPosition, 0);
-    // ;
-    // // Logger.recordOutput("Wrist Speed", pidMotorSpeed);
-     double pidMotorSpeed =
+    MathUtil.clamp(targetPosition, -2.5, 2.5);
+    double pidMotorSpeed =
         pidController.calculate(io.getPosition(), targetPosition)
             + feedForward.calculate(targetPosition, 0);
       setMotor(
         MathUtil.clamp((pidMotorSpeed), -TurretConstants.MAX_VOLTAGE, TurretConstants.MAX_VOLTAGE));
-    // Logger.recordOutput("Turret Target Position", targetPosition);
-    // Logger.recordOutput("Turret Current Position", io.getPosition());
-    // //System.out.println("L1: "+x);
-    // Logger.recordOutput("L1", L1);
-    // Logger.recordOutput("L2", L2);
-    // Logger.recordOutput("TX", LimelightHelpers.getRawFiducials("limelight-turret")[0].txnc);
-      Logger.recordOutput("Theta", theta);
+      
+      
+      
+      
+      
       Logger.recordOutput("Theta1", theta1);
       Logger.recordOutput("Theta2", theta2);
       Logger.recordOutput("DelH", delH);
@@ -306,7 +286,8 @@ public class Turret extends SubsystemBase {
     this.thetap2 = thetap2;
     
   } 
-  public void zero(){
+  public void move(){
+    
     double x = LimelightHelpers.getTX("limelight-turret");
     targetPosition = targetPosition+x/36;
     this.theta = x/36;

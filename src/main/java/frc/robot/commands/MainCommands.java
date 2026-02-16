@@ -67,7 +67,17 @@ public class MainCommands {
   }
 
   public static Command test(Turret turret){
-    return runOnce((() -> turret.zero()));
+    return runOnce((() -> turret.move()));
+    //should hypothetically move the turret while the button is pressed
+    // return run(() -> {
+    //   if(LimelightHelpers.getTargetCount("limelight-turret")!=1){
+    //     return;
+    //   }
+    //   if(LimelightHelpers.getTX("limelight-turret")<10){
+    //     return;
+    //   }
+    //   turret.move();
+    // }, turret);
   }
   // public static Command stopTurretFollow(Turret turret){
   //   return runOnce(() -> turret.followCamera(false), turret);

@@ -111,7 +111,7 @@ public final class Constants {
 
 
     //tune pid and svag later
-    public static final double kP = 2.7; // 2.6
+    public static final double kP = 2.7; // 2.7
     public static final double kI = 0.0;
     public static final double kD = 0.02; // 0.063
 
