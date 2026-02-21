@@ -8,12 +8,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.IntakePivotConstants;
 import frc.robot.Constants.TurretConstants;
 import frc.robot.Constants.WristConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.LimelightHelpers;
 import frc.robot.LimelightHelpers.RawFiducial;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intakePivot.IntakePivot;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.wrist.Wrist;
+import frc.robot.subsystems.shooter.Shooter;
 
 public class MainCommands {
 
@@ -57,6 +59,16 @@ public class MainCommands {
 
   public static Command runIntakeSlow(Intake intake) {
     return runOnce(() -> intake.setSpeed(.15), intake);
+  }
+
+  // Change Later
+  public static Command shoot(Shooter shooter) {
+    return runOnce(() -> shooter.setSpeed(.15), shooter);
+  }
+
+  // Change Later
+  public static Command stopShooter(Shooter shooter) {
+    return runOnce(() -> shooter.setSpeed(0), shooter);
   }
 
 

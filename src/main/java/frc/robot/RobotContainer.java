@@ -46,6 +46,8 @@ import frc.robot.subsystems.intake.IntakeIOTalonFX;
 import frc.robot.subsystems.intakePivot.IntakePivot;
 import frc.robot.subsystems.intakePivot.IntakePivotIO;
 import frc.robot.subsystems.intakePivot.IntakePivotIOTalonFX;
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterIOTalonFX;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.TurretIOTalonFX;
 import frc.robot.subsystems.vision.Vision;
@@ -73,6 +75,7 @@ public class RobotContainer {
   private final Wrist wrist;
   private final Turret turret;
   private final Vision vision;
+  private final Shooter shooter;
 
   // Controller
   private final CommandXboxController driverController = new CommandXboxController(0);
@@ -96,10 +99,14 @@ public class RobotContainer {
 
         turret = new Turret(new TurretIOTalonFX());
 
+        shooter = new Shooter(new ShooterIOTalonFX());
+
         NamedCommands.registerCommand("Stop Intake", MainCommands.stopIntake(intake));
         NamedCommands.registerCommand("Run Intake", MainCommands.runIntake(intake));
         NamedCommands.registerCommand("Slow Intake", MainCommands.runIntakeSlow(intake));
         NamedCommands.registerCommand("Run Outake", MainCommands.runOuttake(intake));
+        NamedCommands.registerCommand("Shoot", MainCommands.shoot(shooter));
+        NamedCommands.registerCommand("Stop Shooter", MainCommands.stopShooter(shooter));
 
         
 
@@ -140,6 +147,8 @@ public class RobotContainer {
 
         turret = new Turret(new TurretIOTalonFX());
 
+        shooter = new Shooter(new ShooterIOTalonFX());
+
         vision =
             new Vision(
                 drive::addVisionMeasurement,
@@ -157,9 +166,15 @@ public class RobotContainer {
         
         turret = new Turret(new TurretIOTalonFX());
 
+        shooter = new Shooter(new ShooterIOTalonFX());
+
+
         NamedCommands.registerCommand("Stop Intake", MainCommands.stopIntake(intake));
         NamedCommands.registerCommand("Run Intake", MainCommands.runIntake(intake));
         NamedCommands.registerCommand("Run Outake", MainCommands.runOuttake(intake));
+        NamedCommands.registerCommand("Turret Follow", MainCommands.test(turret));
+        NamedCommands.registerCommand("Shoot", MainCommands.shoot(shooter));
+        NamedCommands.registerCommand("Stop Shooter", MainCommands.stopShooter(shooter));
 
     
 

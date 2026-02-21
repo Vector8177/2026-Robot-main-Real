@@ -4,12 +4,18 @@
   "holonomicMode": true,
   "pathFolders": [
     "Left",
+    "Left 2026",
     "Middle",
+    "Middle 2026",
+    "Right 2026",
     "Right"
   ],
   "autoFolders": [
     "Left",
+    "Left 2026",
     "Middle",
+    "Middle 2026",
+    "Right 2026",
     "Right"
   ],
   "defaultMaxVel": 3.0,
