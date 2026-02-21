@@ -73,6 +73,12 @@ public final class Constants {
     public static final int MAX_VOLTAGE = 12;
   }
 
+  public static final class ShooterConstants {
+    public static final int LEFT_MOTOR_ID = 0; // Reassign later
+    public static final int RIGHT_MOTOR_ID = 0; //Reassign later
+    public static final int MAX_VOLTAGE = 12;
+  }
+
   public static final class IntakePivotConstants {
     public static final int MOTOR_ID = 32;
     public static final int MAX_VOLTAGE = 12;

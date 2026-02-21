@@ -64,7 +64,59 @@ public class Turret extends SubsystemBase {
 
     time++;
 
-    if(time%25==0 && time>=50){
+    if(time%12==0 && time>=50){
+      int id = (int) LimelightHelpers.getFiducialID("limelight-turret");
+      switch(id){
+        case 2 -> {
+          LimelightHelpers.SetFidcuial3DOffset("limelight-turret", -0.603758, 0, 0);
+        }
+        case 3 -> {
+          LimelightHelpers.SetFidcuial3DOffset("limelight-turret", -0.603758, 0.3556, 0);
+        }
+        case 4 -> {
+          LimelightHelpers.SetFidcuial3DOffset("limelight-turret", -0.603758, 0, 0);
+        }
+        case 5 -> {
+          LimelightHelpers.SetFidcuial3DOffset("limelight-turret", -0.603758, 0, 0);
+        }
+        case 8 -> {
+          LimelightHelpers.SetFidcuial3DOffset("limelight-turret", -0.603758, -0.3556, 0);
+        }
+        case 9 -> {
+           LimelightHelpers.SetFidcuial3DOffset("limelight-turret", -0.603758, 0.3556, 0);
+        }
+        case 10 -> {
+          LimelightHelpers.SetFidcuial3DOffset("limelight-turret", -0.603758, 0, 0);
+        }
+        case 11 -> {
+          LimelightHelpers.SetFidcuial3DOffset("limelight-turret", -0.603758, 0.3556, 0);
+        }
+        case 18 -> {
+          LimelightHelpers.SetFidcuial3DOffset("limelight-turret", -0.603758, 0, 0);
+        }
+        case 19 -> {
+          LimelightHelpers.SetFidcuial3DOffset("limelight-turret", -0.603758, 0.3556, 0);
+        }
+        case 20 -> {
+          LimelightHelpers.SetFidcuial3DOffset("limelight-turret", -0.603758, 0, 0);
+        }
+        case 21 -> {
+          LimelightHelpers.SetFidcuial3DOffset("limelight-turret", -0.603758, 0, 0);
+        }
+        case 24 -> {
+          LimelightHelpers.SetFidcuial3DOffset("limelight-turret", -0.603758, -0.3556, 0);
+        }
+        case 25 -> {
+          LimelightHelpers.SetFidcuial3DOffset("limelight-turret", -0.603758, 0.3556, 0);
+        }
+        case 26 -> {
+          LimelightHelpers.SetFidcuial3DOffset("limelight-turret", -0.603758, 0, 0);
+        }
+        case 27 -> {
+          LimelightHelpers.SetFidcuial3DOffset("limelight-turret", -0.603758, 0.3556, 0);
+        }
+
+      }
       move();
       time = 51;
     }
@@ -74,7 +126,7 @@ public class Turret extends SubsystemBase {
         pidController.calculate(io.getPosition(), targetPosition)
             + feedForward.calculate(targetPosition, 0);
       setMotor(
-        MathUtil.clamp((pidMotorSpeed), -TurretConstants.MAX_VOLTAGE, TurretConstants.MAX_VOLTAGE));
+        MathUtil.clamp((pidMotorSpeed), -2, 2));
       
       
       
